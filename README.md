@@ -3,7 +3,37 @@
 Calculate rolling stdev in python.
 
 Adapted from [The Mindful Programmer (jonisalonen)](https://jonisalonen.com/2014/efficient-and-accurate-rolling-standard-deviation/)
-who had also [replied earlier in this SO](https://stackoverflow.com/a/14638138/548792).
+(had also [replied earlier in this SO](https://stackoverflow.com/a/14638138/548792)).
+
+In that post, the rolling formulas are eventually given like that
+(transcribed here with an iterative viepoint):
+
+$$
+\newcommand{\Var}{\operatorname{Var}}
+\begin{align}
+    \overline{x_{new}} &= \overline{x_{old}}  + \frac{x_{inp} - x_{out}}{N}  \\
+
+    \Var[x_{new}] &= \Var[x_{old}] + (x_{inp} - x_{out})
+        \times (x_{inp} - \overline{x_{new}} + x_{out} - \overline{x_{old}})  \\
+
+    \sigma[x] &= \sqrt{|\Var[x]|}
+\end{align}
+$$
+
+that depend on the numbers *entering* and *exiting* the
+$N$ sized circular-buffer, respectively:
+
+- $x_{inp}$
+- $x_{out}$
+
+and on the mean values of that buffer, *before* and *after* the swap, respectively:
+
+- $\overline{x_{old}}$
+- $\overline{x_{new}}$
+
+**NOTE:** the original post lacked the  absolute ($|...|$) inside the root($\sqrt{}$),
+discovered its need by experiments.  Conventionally calculated variance
+(with sum-of-squared-diffs) is never negative.
 
 ## Quickstart
 
