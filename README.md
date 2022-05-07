@@ -1,6 +1,6 @@
 # Rollstats
 
-Calculate rolling stdev in python.
+Calculate rolling stdev, in python & C++.
 
 Adapted from [The Mindful Programmer (jonisalonen)](https://jonisalonen.com/2014/efficient-and-accurate-rolling-standard-deviation/)
 (had also [replied earlier in this SO](https://stackoverflow.com/a/14638138/548792)).
@@ -39,6 +39,8 @@ discovered its need by experiments.  Conventionally calculated variance
 
 ### command-line
 
+#### Python implementation
+
 ```bash
 ./rollstats.py 3  10 10 10 12 14 12 16 20 12 17 35 10 10 10 10
 0: 10 --> 10.00 ± 0.00
@@ -56,6 +58,27 @@ discovered its need by experiments.  Conventionally calculated variance
 12: 10 --> 18.33 ± 14.43
 13: 10 --> 10.00 ± 0.00
 14: 10 --> 10.00 ± 0.00
+```
+
+#### C++ implementation
+
+```bash
+./rollstats 3  10 10 10 12 14 12 16 20 12 17 35 10 10 10 10
+0: 10 --> 10 ± 0
+1: 10 --> 10 ± 0
+2: 10 --> 10 ± 0
+3: 12 --> 10.67 ± 1
+4: 14 --> 12 ± 1.732
+5: 12 --> 12.67 ± 1
+6: 16 --> 14 ± 1.732
+7: 20 --> 16 ± 3.873
+8: 12 --> 16 ± 3.873
+9: 17 --> 16.33 ± 4
+10: 35 --> 21.33 ± 12.08
+11: 10 --> 20.67 ± 12.88
+12: 10 --> 18.33 ± 14.42
+13: 10 --> 10 ± 0
+14: 10 --> 10 ± 0
 ```
 
 ### python code: auto-populate sample-list from the very 1st item
