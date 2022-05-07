@@ -27,18 +27,28 @@ From: https://jonisalonen.com/2014/efficient-and-accurate-rolling-standard-devia
 14: 10 --> 10.00 ± 0.00
 """
 # %%
-from typing import Final
+from typing import Union
 from math import sqrt
 
 # %%
 
 
 class RollingStats:
-    def __init__(self, wsize):
-        self.WSIZE: Final[int] = wsize
-        self.items = []
-        self.i = 0
-        self.avg = self.variance = 0
+    #: index in `items` of the next item to pop-out and overwrite
+    i: int = 0
+
+    def __init__(self, wsize_or_items: Union[int, list[int]]):
+        try:
+            self.WSIZE = int(wsize_or_items)
+            self.items = []
+            self.avg = self.variance = 0
+        except TypeError:
+            from statistics import mean, stdev
+
+            self.WSIZE = len(wsize_or_items)
+            self.items = wsize_or_items
+            self.avg = mean(self.items)
+            self.variance = stdev(self.items) ** 2
 
     @property
     def stdev(self):
@@ -90,6 +100,15 @@ if __name__ == "__main__":
     main(*sys.argv[1:])
 
 # %%
-# Sample run
+# Sample run auto-populate
 
-# main(3, 10, 10, 10, 12, 14, 12, 16, 20, 12, 17, 35, 10, 10, 10, 10)
+# wsize = 3
+# main(wsize, 10, 10, 10, 12, 14, 12, 16, 20, 12, 17, 35, 10, 10, 10, 10)
+
+# %%
+# Sample run with prepared list
+
+# wsize = 3
+# l = [10, 10, 10, 12, 14, 12, 16, 20, 12, 17, 35, 10, 10, 10, 10]
+# rs = RollingStats(l[:wsize])
+# print("\n".join(rs.roll_stats(*l[wsize:])))
