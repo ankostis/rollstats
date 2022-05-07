@@ -80,11 +80,6 @@ class RollingStats:
         self.variance += dval * \
             (x_inp - newavg + x_out - oldavg) / (nitems - 1)
 
-    def roll_stats(self, items: Number) -> Iterable[tuple[float, float]]:
-        for x_inp in items:
-            self.update(x_inp)
-            yield self.avg, self.stdev
-
 
 # %%
 
@@ -92,13 +87,9 @@ class RollingStats:
 def main(wsize, *items):
     wsize, *items = [float(i) for i in [wsize, *items]]
     rs = RollingStats(wsize)
-    stats = rs.roll_stats(items)
-    print(
-        "\n".join(
-            f"{i}: {x_inp} --> {avg:.2f} ± {stdev:.2f}"
-            for i, (x_inp, (avg, stdev)) in enumerate(zip(items, stats))
-        )
-    )
+    for i, x_inp in enumerate(items):
+        rs.update(x_inp)
+        print(f"{i}: {x_inp} --> {rs.avg:.2f} ± {rs.stdev:.2f}")
 
 
 # %%
