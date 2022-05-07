@@ -4,36 +4,41 @@ From: https://jonisalonen.com/2014/efficient-and-accurate-rolling-standard-devia
 
 ## SYNTAX:
 
-    rollstats.py <wsize> <prior_avg> <prior_stdev> [num] ...
+    rollstats.py <wsize> [num] ...
 
 ## Sample run:
 
 ```bash
-./rollstats.py 3 10 0  10 10 10 12 14 12 16 20 12 17 35 10 10 10 10
-0: 10 --> 0.00
-1: 12 --> 1.15
-2: 14 --> 2.00
-3: 12 --> 2.00
-4: 16 --> 3.06
-5: 20 --> 5.03
-6: 12 --> 5.29
-7: 17 --> 3.61
-8: 35 --> 12.90
-9: 10 --> 14.43
-10: 10 --> 0.00
-11: 10 --> 0.00
-```
+./rollstats.py 3  10 10 10 12 14 12 16 20 12 17 35 10 10 10 10
+0: 10 --> 10.00 ± 0.00
+1: 10 --> 10.00 ± 0.00
+2: 10 --> 10.00 ± 0.00
+3: 12 --> 10.67 ± 1.15
+4: 14 --> 12.00 ± 2.00
+5: 12 --> 12.67 ± 1.15
+6: 16 --> 14.00 ± 2.00
+7: 20 --> 16.00 ± 4.00
+8: 12 --> 16.00 ± 4.00
+9: 17 --> 16.33 ± 4.04
+10: 35 --> 21.33 ± 12.10
+11: 10 --> 20.67 ± 12.90
+12: 10 --> 18.33 ± 14.43
+13: 10 --> 10.00 ± 0.00
+14: 10 --> 10.00 ± 0.00
 """
-#%%
+# %%
 from typing import Final
 from math import sqrt
 
 # %%
+
+
 class RollingStats:
-    def __init__(self, window_size, avg, variance):
-        self.WSIZE: Final[int] = window_size
-        self.avg = avg
-        self.variance = variance
+    def __init__(self, wsize):
+        self.WSIZE: Final[int] = wsize
+        self.items = []
+        self.i = 0
+        self.avg = self.variance = 0
 
     @property
     def stdev(self):
@@ -41,33 +46,50 @@ class RollingStats:
         # If no `abs()`, sqrt screams about ValueError: math domain error
         return sqrt(abs(self.variance))
 
-    def update(self, x_inp, x_out):
+    def update(self, x_inp):
+        l = self.items
+        N = self.WSIZE
+        nitems = len(l)
+        if nitems < N:
+            l.append(x_inp)  # insertion repeated below
+            if nitems == 0:
+                self.avg = x_inp
+                self.variance = 0
+                return
+            nitems += (nitems == 1)  # avoid DivBy0 below
+        else:
+            nitems = N
+        i = self.i
+        x_out, l[i] = l[i], x_inp
+        self.i = (i + 1) % N
+
         dval = x_inp - x_out
         oldavg = self.avg
-        self.avg = newavg = self.avg + dval / self.WSIZE
-        self.variance += dval * (x_inp - newavg + x_out - oldavg) / (self.WSIZE - 1)
+        self.avg = newavg = self.avg + dval / nitems
+        self.variance += dval * (x_inp - newavg + x_out - oldavg) / (nitems - 1)
 
     def roll_stats(self, *items: int):
-        for i in range(len(items) - self.WSIZE):
-            x_out = items[i]
-            x_inp = items[i + self.WSIZE - 1]
-            self.update(x_inp, x_out)
-            yield f"{i}: {x_inp} --> {self.stdev:.2f}"
+        for i, x_inp in enumerate(items):
+            self.update(x_inp)
+            yield f"{i}: {x_inp} --> {self.avg:.2f} ± {self.stdev:.2f}"
 
-#%%
-def main(wsize, prior_avg, prior_stdev, *items):
-    l = [wsize, prior_avg, prior_stdev, *items]
-    wsize, prior_avg, prior_stdev, *items = [int(i) for i in l]
-    rs = RollingStats(wsize, prior_avg, prior_stdev)
+
+# %%
+
+
+def main(wsize, *items):
+    wsize, *items = [int(i) for i in [wsize, *items]]
+    rs = RollingStats(wsize)
     print("\n".join(rs.roll_stats(*items)))
 
 
+# %%
 if __name__ == "__main__":
     import sys
 
     main(*sys.argv[1:])
 
-#%%
+# %%
 # Sample run
 
-# main(3, 10, 0, 10, 10, 10, 12, 14, 12, 16, 20, 12, 17, 35, 10, 10, 10, 10)
+# main(3, 10, 10, 10, 12, 14, 12, 16, 20, 12, 17, 35, 10, 10, 10, 10)
