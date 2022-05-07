@@ -2,11 +2,11 @@
 """
 From: https://jonisalonen.com/2014/efficient-and-accurate-rolling-standard-deviation/
 
-## SYNTAX:
+# SYNTAX:
 
     rollstats.py <wsize> [num] ...
 
-## Sample run:
+# Sample run:
 
 ```bash
 ./rollstats.py 3  10 10 10 12 14 12 16 20 12 17 35 10 10 10 10
@@ -76,12 +76,13 @@ class RollingStats:
         dval = x_inp - x_out
         oldavg = self.avg
         self.avg = newavg = self.avg + dval / nitems
-        self.variance += dval * (x_inp - newavg + x_out - oldavg) / (nitems - 1)
+        self.variance += dval * \
+            (x_inp - newavg + x_out - oldavg) / (nitems - 1)
 
-    def roll_stats(self, *items: int):
-        for i, x_inp in enumerate(items):
+    def roll_stats(self, items: int):
+        for x_inp in items:
             self.update(x_inp)
-            yield f"{i}: {x_inp} --> {self.avg:.2f} ± {self.stdev:.2f}"
+            yield self.avg, self.stdev
 
 
 # %%
@@ -90,7 +91,13 @@ class RollingStats:
 def main(wsize, *items):
     wsize, *items = [int(i) for i in [wsize, *items]]
     rs = RollingStats(wsize)
-    print("\n".join(rs.roll_stats(*items)))
+    stats = rs.roll_stats(items)
+    print(
+        "\n".join(
+            f"{i}: {x_inp} --> {avg:.2f} ± {stdev:.2f}"
+            for i, (x_inp, (avg, stdev)) in enumerate(zip(items, stats))
+        )
+    )
 
 
 # %%
@@ -111,4 +118,8 @@ if __name__ == "__main__":
 # wsize = 3
 # l = [10, 10, 10, 12, 14, 12, 16, 20, 12, 17, 35, 10, 10, 10, 10]
 # rs = RollingStats(l[:wsize])
-# print("\n".join(rs.roll_stats(*l[wsize:])))
+# items = l[wsize:]
+# stats = rs.roll_stats(items)
+# print("\n".join(
+#     f"{i}: {x_inp} --> {avg:.2f} ± {stdev:.2f}"
+#     for i, (x_inp, (avg, stdev)) in enumerate(zip(items, stats))))

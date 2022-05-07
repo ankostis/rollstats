@@ -42,8 +42,12 @@ main(wsize, 10, 10, 10, 12, 14, 12, 16, 20, 12, 17, 35, 10, 10, 10, 10)
 ...alternative run to validate the correctness of the results:
 
 ```python
-wsize = 3
+ize = 3
 l = [10, 10, 10, 12, 14, 12, 16, 20, 12, 17, 35, 10, 10, 10, 10]
 rs = RollingStats(l[:wsize])
-print("\n".join(rs.roll_stats(*l[wsize:])))
+items = l[wsize:]
+stats = rs.roll_stats(items)
+print("\n".join(
+    f"{i}: {x_inp} --> {avg:.2f} ± {stdev:.2f}"
+    for i, (x_inp, (avg, stdev)) in enumerate(zip(items, stats))))
 ```
