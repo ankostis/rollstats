@@ -27,7 +27,8 @@ From: https://jonisalonen.com/2014/efficient-and-accurate-rolling-standard-devia
 14: 10 --> 10.00 ± 0.00
 """
 # %%
-from typing import Union
+from typing import Union, Iterable
+from numbers import Number
 from math import sqrt
 
 # %%
@@ -56,7 +57,7 @@ class RollingStats:
         # If no `abs()`, sqrt screams about ValueError: math domain error
         return sqrt(abs(self.variance))
 
-    def update(self, x_inp):
+    def update(self, x_inp: Union[int, Number]):
         l = self.items
         N = self.WSIZE
         nitems = len(l)
@@ -79,7 +80,7 @@ class RollingStats:
         self.variance += dval * \
             (x_inp - newavg + x_out - oldavg) / (nitems - 1)
 
-    def roll_stats(self, items: int):
+    def roll_stats(self, items: Number) -> Iterable[tuple[float, float]]:
         for x_inp in items:
             self.update(x_inp)
             yield self.avg, self.stdev
@@ -89,7 +90,7 @@ class RollingStats:
 
 
 def main(wsize, *items):
-    wsize, *items = [int(i) for i in [wsize, *items]]
+    wsize, *items = [float(i) for i in [wsize, *items]]
     rs = RollingStats(wsize)
     stats = rs.roll_stats(items)
     print(
