@@ -42,6 +42,7 @@ each new element has been inserted in the circular buffer.
 
 - `rollstats.py` - start with empty OR a pre-filled circular-buffer
 - `rollstats1.cpp` - start with empty std::vector (runtime sized)
+- `rollstats2.cpp` - start with compile-time array pre-filled with a single value
 
 ## Quickstart
 
@@ -68,7 +69,9 @@ each new element has been inserted in the circular buffer.
 14: 10 --> 10.00 ± 0.00
 ```
 
-#### C++ implementation
+#### C++ implementations
+
+##### with `std::vector`
 
 ```bash
 ./rollstats1 3  10 10 10 12 14 12 16 20 12 17 35 10 10 10 10
@@ -87,6 +90,27 @@ each new element has been inserted in the circular buffer.
 12: 10 --> 18.33 ± 14.42
 13: 10 --> 10 ± 0
 14: 10 --> 10 ± 0
+```
+
+##### compile-sized & pre-filled with a single value
+
+Notice that less items are given, since the 1st `10` is fills the entire
+circular array (by default, 3-elements sized):
+
+```bash
+/rollstats2.exe 10 12 14 12 16 20 12 17 35 10 10 10 10
+1: 12 --> 10.67 ± 1
+2: 14 --> 15.33 ± 9.055
+3: 12 --> 19.33 ± 14.76
+4: 16 --> 20.67 ± 15.56
+5: 20 --> 22.67 ± 16.43
+6: 12 --> 22.67 ± 16.43
+7: 17 --> 23 ± 16.64
+8: 35 --> 28 ± 15.72
+9: 10 --> 27.33 ± 14.59
+10: 10 --> 25 ± 11.18
+11: 10 --> 16.67 ± 12.88
+12: 10 --> 16.67 ± 12.88
 ```
 
 ### Python code
