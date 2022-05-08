@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 """
-From: https://jonisalonen.com/2014/efficient-and-accurate-rolling-standard-deviation/
+Rolling avg, stdev, starting with an empty OR a pre-filled circular-buffer.
 
 # SYNTAX:
-
     rollstats.py <wsize> [num] ...
 
 # Sample run:
@@ -25,6 +24,10 @@ From: https://jonisalonen.com/2014/efficient-and-accurate-rolling-standard-devia
 12: 10 --> 18.33 ± 14.43
 13: 10 --> 10.00 ± 0.00
 14: 10 --> 10.00 ± 0.00
+```
+
+Adapted from:
+https://jonisalonen.com/2014/efficient-and-accurate-rolling-standard-deviation/
 """
 # %%
 from typing import Union, Iterable
@@ -35,6 +38,7 @@ from math import sqrt
 
 
 class RollingStats:
+    __doc__ = __doc__
     #: index in `items` of the next item to pop-out and overwrite
     i: int = 0
 

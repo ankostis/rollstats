@@ -35,9 +35,17 @@ and on the mean values of that buffer, *before* and *after* the swap, respective
 discovered its need by experiments.  Conventionally calculated variance
 (with sum-of-squared-diffs) is never negative.
 
+## Implementations
+
+All classes compute the *average*, *variance* and *standard-deviation* after
+each new element has been inserted in the circular buffer.
+
+- `rollstats.py` - start with empty OR a pre-filled circular-buffer
+- `rollstats.cpp` - start with empty std::vector (runtime sized)
+
 ## Quickstart
 
-### command-line
+### Command-line
 
 #### Python implementation
 
@@ -81,7 +89,9 @@ discovered its need by experiments.  Conventionally calculated variance
 14: 10 --> 10 ± 0
 ```
 
-### python code: auto-populate sample-list from the very 1st item
+### Python code
+
+#### Auto-populate circular-buffer from the very 1st item
 
 ...like the command-line does:
 
@@ -90,7 +100,7 @@ wsize = 3
 main(wsize, 10, 10, 10, 12, 14, 12, 16, 20, 12, 17, 35, 10, 10, 10, 10)
 ```
 
-### python code:  start with a prepared list
+#### Start with a pre-filled list
 
 ...alternative run to validate the correctness of the results:
 

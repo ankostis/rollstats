@@ -1,9 +1,7 @@
 /*
- * From:
- * https://jonisalonen.com/2014/efficient-and-accurate-rolling-standard-deviation/
+ * Rolling avg, stdev starting with an empty vector sized on runtime.
  *
  * SYNTAX:
- *
  *     rollstats <wsize> [num] ...
  *
  * Sample run:
@@ -26,6 +24,9 @@
  * 13: 10 --> 10 ± 0
  * 14: 10 --> 10 ± 0
  * ```
+ *
+ * Adapted from:
+ * https://jonisalonen.com/2014/efficient-and-accurate-rolling-standard-deviation/
  */
 #include <cmath>
 #include <cstdlib>
