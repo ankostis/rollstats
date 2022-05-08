@@ -41,7 +41,7 @@ All classes compute the *average*, *variance* and *standard-deviation* after
 each new element has been inserted in the circular buffer.
 
 - `rollstats.py` - start with empty OR a pre-filled circular-buffer
-- `rollstats.cpp` - start with empty std::vector (runtime sized)
+- `rollstats1.cpp` - start with empty std::vector (runtime sized)
 
 ## Quickstart
 
@@ -71,7 +71,7 @@ each new element has been inserted in the circular buffer.
 #### C++ implementation
 
 ```bash
-./rollstats 3  10 10 10 12 14 12 16 20 12 17 35 10 10 10 10
+./rollstats1 3  10 10 10 12 14 12 16 20 12 17 35 10 10 10 10
 0: 10 --> 10 ± 0
 1: 10 --> 10 ± 0
 2: 10 --> 10 ± 0
