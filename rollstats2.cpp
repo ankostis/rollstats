@@ -1,5 +1,6 @@
 /**
- * Rolling avg, stdev with compile-sized array pre-filled with the same init-value on runtime.
+ * Rolling avg, stdev with compile-sized array pre-filled with the same
+ * init-value on runtime.
  *
  * SYNTAX:
  *     rollstats <wsize> [num] ...
@@ -22,8 +23,9 @@
  * 12: 10 --> 16.67 ± 12.88
  * ```
  *
- * Adapted from:
- * https://jonisalonen.com/2014/efficient-and-accurate-rolling-standard-deviation/
+ * - Adapted from:
+ *   https://jonisalonen.com/2014/efficient-and-accurate-rolling-standard-deviation/
+ * - Project home: https://github.com/ankostis/rollstats
  */
 #include <cmath>
 #include <cstdlib>

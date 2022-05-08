@@ -25,8 +25,9 @@
  * 14: 10 --> 10 ± 0
  * ```
  *
- * Adapted from:
- * https://jonisalonen.com/2014/efficient-and-accurate-rolling-standard-deviation/
+ * - Adapted from:
+ *   https://jonisalonen.com/2014/efficient-and-accurate-rolling-standard-deviation/
+ * - Project home: https://github.com/ankostis/rollstats
  */
 #include <cmath>
 #include <cstdlib>

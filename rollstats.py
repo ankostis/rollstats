@@ -26,8 +26,9 @@ Rolling avg, stdev, starting with an empty OR a pre-filled circular-buffer.
 14: 10 --> 10.00 ± 0.00
 ```
 
-Adapted from:
-https://jonisalonen.com/2014/efficient-and-accurate-rolling-standard-deviation/
+- Adapted from:
+  https://jonisalonen.com/2014/efficient-and-accurate-rolling-standard-deviation/
+- Project home: https://github.com/ankostis/rollstats
 """
 # %%
 from typing import Union, Iterable
