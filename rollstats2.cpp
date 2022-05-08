@@ -1,5 +1,5 @@
 /**
- * Rolling avg, stdev with compile-time circular array and a single init-value.
+ * Rolling avg, stdev with compile-sized array pre-filled with the same init-value on runtime.
  *
  * SYNTAX:
  *     rollstats <wsize> [num] ...

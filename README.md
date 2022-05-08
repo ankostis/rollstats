@@ -1,6 +1,6 @@
 # Rollstats
 
-Calculate rolling *avg*, *var* & *stdev*, in python & C++ code
+Calculate rolling *avg*, *var* & *stdev*, in Python & C++ code
 
 ## 1. Math formulas
 
@@ -42,9 +42,9 @@ discovered its need by experiments.  Conventionally calculated variance
 All classes compute the *average*, *variance* and *standard-deviation* after
 each new element has been inserted in the circular buffer.
 
-- `rollstats.py` - start with empty OR a pre-filled circular-buffer
-- `rollstats1.cpp` - start with empty std::vector (runtime sized)
-- `rollstats2.cpp` - start with compile-time array pre-filled with a single value
+- `rollstats.py` - start with an empty OR a pre-filled circular-buffer.
+- `rollstats1.cpp` - start with an empty std::vector (runtime sized).
+- `rollstats2.cpp` - compile-sized array pre-filled with the same init-value on runtime
 
 ## 3. Quickstart
 

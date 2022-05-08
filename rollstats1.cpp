@@ -1,5 +1,5 @@
-/*
- * Rolling avg, stdev starting with an empty vector sized on runtime.
+/**
+ * Rolling avg, stdev starting with an empty (runtime sized) std::vector.
  *
  * SYNTAX:
  *     rollstats <wsize> [num] ...
