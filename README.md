@@ -1,6 +1,8 @@
 # Rollstats
 
-Calculate rolling stdev, in python & C++.
+Calculate rolling *avg*, *var* & *stdev*, in python & C++ code
+
+## 1. Math formulas
 
 Adapted from [The Mindful Programmer (jonisalonen)](https://jonisalonen.com/2014/efficient-and-accurate-rolling-standard-deviation/)
 (had also [replied earlier in this SO](https://stackoverflow.com/a/14638138/548792)).
@@ -35,7 +37,7 @@ and on the mean values of that buffer, *before* and *after* the swap, respective
 discovered its need by experiments.  Conventionally calculated variance
 (with sum-of-squared-diffs) is never negative.
 
-## Implementations
+## 2. Implementations
 
 All classes compute the *average*, *variance* and *standard-deviation* after
 each new element has been inserted in the circular buffer.
@@ -44,11 +46,20 @@ each new element has been inserted in the circular buffer.
 - `rollstats1.cpp` - start with empty std::vector (runtime sized)
 - `rollstats2.cpp` - start with compile-time array pre-filled with a single value
 
-## Quickstart
+## 3. Quickstart
 
-### Command-line
+### 3.1. Build
+- Python does not need any extra library.
+- Build C-impls:
 
-#### Python implementation
+  ```bash
+  g++ -Wall -Wextra -Werror -std=c++20 -pie rollstats2.cpp -o rollstats2.exe
+  ```
+
+
+### 3.2. Command-line
+
+#### 3.2.1. Python
 
 ```bash
 ./rollstats.py 3  10 10 10 12 14 12 16 20 12 17 35 10 10 10 10
@@ -69,9 +80,7 @@ each new element has been inserted in the circular buffer.
 14: 10 --> 10.00 ± 0.00
 ```
 
-#### C++ implementations
-
-##### with `std::vector`
+##### 3.2.2. C++, start with an empty `std::vector`
 
 ```bash
 ./rollstats1 3  10 10 10 12 14 12 16 20 12 17 35 10 10 10 10
@@ -92,7 +101,7 @@ each new element has been inserted in the circular buffer.
 14: 10 --> 10 ± 0
 ```
 
-##### compile-sized & pre-filled with a single value
+##### 3.2.3. C++, compile-sized & pre-filled with a single value
 
 Notice that less items are given, since the 1st `10` is fills the entire
 circular array (by default, 3-elements sized):
@@ -113,9 +122,9 @@ circular array (by default, 3-elements sized):
 12: 10 --> 16.67 ± 12.88
 ```
 
-### Python code
+### 3.3. Python code
 
-#### Auto-populate circular-buffer from the very 1st item
+#### 3.3.1. Auto-populate circular-buffer from the very 1st item
 
 ...like the command-line does:
 
@@ -124,7 +133,7 @@ wsize = 3
 main(wsize, 10, 10, 10, 12, 14, 12, 16, 20, 12, 17, 35, 10, 10, 10, 10)
 ```
 
-#### Start with a pre-filled list
+#### 3.3.2. Start with a pre-filled list
 
 ...alternative run to validate the correctness of the results:
 
